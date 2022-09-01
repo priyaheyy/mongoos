@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main page</title>
+</head>
+<body>
+    <form>
+        <h3>enter the course details</h3>
+        <label for="name" >name</label>
+        <input type="text" id="name"><br>
+        <label for="type">type</label>
+        <input type="text" id="type"><br>
+        <label for="duration">duration</label>
+         <input type="text" id="duration"><br>
+         <label for="Price">price</label>
+            <input type="text" id="price"><br>
+            <label for="Mrp">mrp</label>
+            <input type="text" id="mrp"><br>
+            <label for="Discount">discount% </label>
+            <input type="text" id="discount"><br>
+            <label for="Rating">rating</label>
+            <input type="text" id="rating"><br>
+            <label for="category">category</label>
+            <input type="text" id="category"><br>
+            <label for="Thumbnail">Thumbnail</label>
+            <input type="text" id="thumbnail">
+            <label for="Demo">Demo</label>
+             <input type="text" id="demo"><br>
+             <button type="submit"  id="submit">submit</button><br><br>
+
+            
+
+
+    </form>
+    <form>
+        <h3>update the course details</h3>
+<label for="updat">old mrp</label>
+<input type="text" id="update">
+<label for="updat">new mrp</label>
+<input type="text" id="update1">
+<button type="submit"  id="updatemrp">submit</button><br><br>
+
+
+    </form>
+    <form>
+        <h3>search the course</h3>
+        <label for="search">search options</label>
+        <select name="option" id="option">
+            <option value="id">By id</option>
+            <option value="price">By Price</option>
+            <option value="category">By category</option>
+            <option value="rating">By rating</option>
+            </select>
+            <input type="text" id="valuesearched" placeholder="value to be search">
+            <input type="submit" value="Submitsearch" id="submitsearch">
+
+    </form>
+    <ul id="datasearched"></ul>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js"></script>
+    <script>
+        document.getElementById('submit').addEventListener('click',(e)=>{
+            e.preventDefault()
+            var name=document.getElementById('name').value
+            var type=document.getElementById('type').value
+            var duration=document.getElementById('duration').value
+            var price=document.getElementById('price').value
+            var mrp=document.getElementById('mrp').value
+            var discount=document.getElementById('discount').value
+            var rating=document.getElementById('rating').value
+            var category=document.getElementById('category').value
+            var thumbnail=document.getElementById('thumbnail').value
+            var demo=document.getElementById('demo').value
+            var obj={
+                name,
+                type,
+                duration,
+                price,
+                mrp,
+                discount,
+                rating,
+                category,
+                thumbnail,
+                demo
+            }
+            // console.log(obj)
+axios.post('http://localhost:4000/data', obj)
+.then((res)=>{alert('data saved')})
+        })
+
+
+document.getElementById('updatemrp').addEventListener('click',(e)=>{
+    e.preventDefault()
+    const oldmrp=document.getElementById('update').value
+    const newmrp=document.getElementById('update1').value
+    const obj1={
+        oldmrp,
+        newmrp
+    }
+    axios.post('http://localhost:4000/update', obj1).then((res)=>{
+        alert('value updated')
+    })
+})
+
+document.getElementById('submitsearch').addEventListener('click',(e)=>{
+    e.preventDefault()
+    var option=document.getElementById('option').value
+    var value=document.getElementById('valuesearched').value
+    var obj2={
+        value,
+        option
+    }
+    // console.log(option,obj2)
+    var ul=document.getElementById('datasearched')
+    axios.post(`http://localhost:4000/${option}`,obj2).then((result)=>{
+        console.log(result)
+        var arr=result.data.data.split(',')
+        
+        for(var i=0;i<arr.length;i++)
+        {
+            var li=document.createElement('li')
+            li.appendChild(document.createTextNode(`${arr[i]}`))
+            ul.appendChild(li)
+        }
+    })
+    
+})
+
+         
+
+    </script>
+
+    
+</body>
+</html>
